@@ -24,10 +24,15 @@ ALTER SCHEMA tasty_bytes_dbt_db.prod SET LOG_LEVEL = 'INFO';
 ALTER SCHEMA tasty_bytes_dbt_db.prod SET TRACE_LEVEL = 'ALWAYS';
 ALTER SCHEMA tasty_bytes_dbt_db.prod SET METRIC_LEVEL = 'ALL';
 
-CREATE OR REPLACE API INTEGRATION git_integration
-  API_PROVIDER = git_https_api
-  API_ALLOWED_PREFIXES = ('https://github.com/')
-  ENABLED = TRUE;
+-- CREATE OR REPLACE API INTEGRATION git_integration
+--   API_PROVIDER = git_https_api
+--   API_ALLOWED_PREFIXES = ('https://github.com/')
+--   ENABLED = TRUE;
+
+CREATE OR REPLACE GIT REPOSITORY SF_GITHUB_REPO_DBT
+    api_integration = SF_GITHUB_API_INTEGRATION
+    git_credentials = SF_GITHUB_SECRET
+    origin = 'https://github.com/sfc-gh-rahagrawal/getting-started-with-dbt-on-snowflake.git';
 
 CREATE OR REPLACE NETWORK RULE tasty_bytes_dbt_db.public.dbt_network_rule
   MODE = EGRESS
