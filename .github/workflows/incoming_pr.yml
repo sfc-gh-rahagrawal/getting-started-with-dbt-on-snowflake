@@ -35,6 +35,9 @@ jobs:
       - name: Check Snowflake CLI Version
         run: snow --version
 
+      - name: Install dbt adapter
+        run: snow spcs image pull ghcr.io/dbt-labs/dbt-snowflake:1.10.latest
+
       # The -x is shorthand for --temporary-connection
       - run: snow connection test -x
 
