@@ -3,6 +3,7 @@ USE ROLE ACCOUNTADMIN;
 SHOW WAREHOUSES;
 CREATE WAREHOUSE tasty_bytes_dbt_wh WAREHOUSE_SIZE = LARGE;
 
+
 CREATE DATABASE tasty_bytes_dbt_db;
 CREATE SCHEMA tasty_bytes_dbt_db.dev;
 CREATE SCHEMA tasty_bytes_dbt_db.prod;
