@@ -34,9 +34,6 @@ jobs:
       - name: Check Snowflake CLI Version
         run: snow --version
 
-      - name: Install dbt adapter
-        run: snow spcs image pull ghcr.io/dbt-labs/dbt-snowflake:1.10.latest
-
       # The -x is shorthand for --temporary-connection
       - run: snow connection test -x
 
@@ -44,6 +41,7 @@ jobs:
         run: snow dbt deps --project-dir tasty_bytes_dbt_demo
       
       # The --force setting creates the object or updates it if it already exists
+      # The --dbt-version flag controls which dbt runtime Snowflake installs for this project object
       # You can remove the "--source" flag if your dbt_project.yml is at root of your repo
       # The --default-target flag ensures the dbt project object compiles and executes with your prod target
       - name: Create a new dbt project object in ${{ vars.SNOWFLAKE_DATABASE }}.${{ vars.SNOWFLAKE_SCHEMA }}
