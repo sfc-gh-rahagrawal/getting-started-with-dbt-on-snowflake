@@ -28,7 +28,10 @@ USE ROLE ACCOUNTADMIN;
 -- Alternatively, you can use an existing warehouse in your account.
 -- =============================================================================
 
-CREATE WAREHOUSE tasty_bytes_dbt_wh WAREHOUSE_SIZE = XLARGE;
+CREATE OR REPLACE WAREHOUSE tasty_bytes_dbt_wh WAREHOUSE_SIZE = LARGE;
+DESC WAREHOUSE tasty_bytes_dbt_wh;
+SHOW WAREHOUSES;
+
 
 -- =============================================================================
 -- STEP 2: Create a database and schemas for integrations and model materializations
@@ -102,19 +105,19 @@ CREATE OR REPLACE API INTEGRATION tb_dbt_git_api_integration
 -- =============================================================================
 
 -- Create NETWORK RULE for external access integration
--- CREATE OR REPLACE NETWORK RULE dbt_network_rule
---   MODE = EGRESS
---   TYPE = HOST_PORT
---   -- Minimal URL allowlist that is required for dbt deps
---   VALUE_LIST = (
---     'hub.getdbt.com',
---     'codeload.github.com'
---     );
+CREATE OR REPLACE NETWORK RULE dbt_network_rule
+  MODE = EGRESS
+  TYPE = HOST_PORT
+  -- Minimal URL allowlist that is required for dbt deps
+  VALUE_LIST = (
+    'hub.getdbt.com',
+    'codeload.github.com'
+    );
 
 -- Create EXTERNAL ACCESS INTEGRATION for dbt access to external dbt package locations
--- CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION dbt_ext_access
---   ALLOWED_NETWORK_RULES = (dbt_network_rule)
---   ENABLED = TRUE;
+CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION dbt_ext_access
+  ALLOWED_NETWORK_RULES = (dbt_network_rule)
+  ENABLED = TRUE;
 
 -- =============================================================================
 -- STEP 6: Set up source data - Tasty Bytes foundational data model
