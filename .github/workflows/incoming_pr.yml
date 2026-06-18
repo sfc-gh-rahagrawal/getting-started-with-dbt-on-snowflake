@@ -35,13 +35,23 @@ jobs:
       - name: Check Snowflake CLI Version
         run: snow --version
 
-      - name: Install dbt adapter
-        run: snow spcs image pull ghcr.io/dbt-labs/dbt-snowflake:1.10.latest
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dbt Core and Snowflake adapter
+        run: python -m pip install "dbt-core==1.10.15" "dbt-snowflake==1.10.2"
+
+      - name: Install dbt package dependencies
+        run: dbt deps --project-dir tasty_bytes_dbt_demo
 
       # The -x is shorthand for --temporary-connection
       - run: snow connection test -x
 
       # The --force setting creates the object or updates it if it already exists
+      # The --dbt-version flag controls which dbt runtime Snowflake installs for this project object
+      # If your project uses packages, either commit dbt_packages/ or configure external access integrations so deploy can resolve dependencies
       # You can remove the "--source" flag if your dbt_project.yml is at root of your repo
       - name: Create a new tester dbt project object in ${{ vars.SNOWFLAKE_DATABASE }}.${{ vars.SNOWFLAKE_SCHEMA }}
         run: snow dbt deploy tester_tasty_bytes_dbt_project_object_gh_action --source ./tasty_bytes_dbt_demo --dbt-version 1.10.15 --force -x
