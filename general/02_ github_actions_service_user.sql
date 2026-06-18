@@ -13,5 +13,6 @@ CREATE USER IF NOT EXISTS github_actions_service_user
 GRANT ROLE ACCOUNTADMIN TO USER github_actions_service_user;
 
 ALTER USER github_actions_service_user SET DEFAULT_WAREHOUSE = 'TASTY_BYTES_DBT_WH';
+ALTER USER github_actions_service_user SET DEFAULT_WAREHOUSE = 'COMPUTE_WH';
 
 SHOW GRANTS TO ROLE ACCOUNTADMIN;
