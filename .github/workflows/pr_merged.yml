@@ -37,11 +37,9 @@ jobs:
       # The -x is shorthand for --temporary-connection
       - run: snow connection test -x
 
-      - name: Install dbt package dependencies
-        run: snow dbt deps --project-dir tasty_bytes_dbt_demo
-      
       # The --force setting creates the object or updates it if it already exists
       # The --dbt-version flag controls which dbt runtime Snowflake installs for this project object
+      # If your project uses packages, either commit dbt_packages/ or configure external access integrations so deploy can resolve dependencies
       # You can remove the "--source" flag if your dbt_project.yml is at root of your repo
       # The --default-target flag ensures the dbt project object compiles and executes with your prod target
       - name: Create a new dbt project object in ${{ vars.SNOWFLAKE_DATABASE }}.${{ vars.SNOWFLAKE_SCHEMA }}
